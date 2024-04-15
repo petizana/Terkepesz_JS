@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="hu">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="elements.js"></script>
+    <script src="missions.js"></script>
+    <script src="season.js"></script>
+    <script src="missionFunctions.js"></script>
+    <script src="script.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <title>Burgonya térkép</title>
+</head>
+
+<body>
+    <table width="100%">
+        <tr>
+            <td>
+                <h1>Burgonya térkép</h1>
+            </td>
+
+            <td class="center">
+                <table width="300">
+                    <tr>
+                        <td>
+                            <div id="spring">Tavasz: <br> 0 pont</div>
+                        </td>
+                        <td>
+                            <div id="summer">Nyár: <br> 0 pont</div>
+                        </td>
+                        <td>
+                            <div id="autumn">Ősz: <br> 0 pont</div>
+                        </td>
+                        <td>
+                            <div id="winter">Tél: <br> 0 pont</div>
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td colspan="4" id="counter">Összesen: 0 pont</td>
+                    </tr>
+
+                </table>
+            </td>
+        </tr>
+        <tr>
+
+            <td rowspan="2" width="50%">
+                <table width="550" height="550" id="playerArea"></table>
+            </td>
+            <td class="center">
+
+                <font size="+2"><b>Jelenlegi évszak: <span id="season"></span></b></font>
+                <hr>
+                <table id="missions"></table>
+            </td>
+
+        </tr>
+        <tr>
+
+
+            <td class="center">
+                <font size="+2"><b>Évszakból hátralevő idő
+                <span id="remainingTime"></span>/7</b></font>
+                <hr>
+
+                <div class="center" id="buttonsForMirrorAndRotate">
+                    Lehelyezendő elem: <br>
+                    <button id="rotate">Forgatás</button>
+                    <button id="mirror">Tükrözés</button>
+
+                    <div id="elemToBePut"></div>
+                    <br>
+
+
+                </div>
+                <div id="results"><b>Az összes küldetésen elért pontszámok egyesével, nem követelmény, csak tesztelés miatt logolom:</div>
+                <button id="localClear">Játék újraindítása</button>
+
+
+
+
+
+
+
+            </td>
+
+
+        </tr>
+    </table>
+
+</body>
+
+</html>
