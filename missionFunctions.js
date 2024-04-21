@@ -9,28 +9,28 @@ let givenMissions = []; // ebbe rakom a meghívandó get...MissionPoints függv�
  * A négy küldetést sorsolja és jelzi ki
  */
 function getMissions() {
+    let missionsForLoading = [];
     let output = "";
     const missionLabels = ['A', 'B', 'C', 'D'];
 
     const savedMissions = JSON.parse(localStorage.getItem('saveMissions'));
     if (savedMissions) { // mentésből betöltés (ha van)
-        missions = savedMissions;
-        missions.forEach((mission, index) => {
+        missionsForLoading = savedMissions;
+        missionsForLoading.forEach((mission, index) => {
             givenMissions.push(getMissionPointsFunction(mission.title));
             output += formatMissionOutput(mission, index, missionLabels);
         });
     } else {
         for (let i = 0; i < 4; i++) {
             let randomMission = missions[Math.floor(Math.random() * missions.length)];
-            missions.push(randomMission);
-            console.log(missions);
+            missionsForLoading.push(randomMission);
             givenMissions.push(getMissionPointsFunction(randomMission.title));
             missions = missions.filter(mission => mission !== randomMission); // kitöröljük az eredeti mátrixból, 
             //hogy a következő sorsoláskor ezt már ne lehessen kisorsolni
 
             output += formatMissionOutput(randomMission, i, missionLabels);
         }
-        localStorage.setItem('saveMissions', JSON.stringify(missions));
+        localStorage.setItem('saveMissions', JSON.stringify(missionsForLoading));
     }
 
     document.getElementById('missions').innerHTML = output;
