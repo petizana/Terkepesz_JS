@@ -9,131 +9,72 @@ let givenMissions = []; // ebbe rakom a meghívandó get...MissionPoints függv�
  * A négy küldetést sorsolja és jelzi ki
  */
 function getMissions() {
-    let m = [];
-    let out = "";
-    const abc = ['A', 'B', 'C', 'D'];
+    let missionsForLoading = [];
+    let output = "";
+    const missionLabels = ['A', 'B', 'C', 'D'];
 
-    const loadedMissions = JSON.parse(localStorage.getItem('saveMissions'));
-    if (loadedMissions) { // amikor mentésből töltjük be
-        m = loadedMissions;
+    const savedMissions = JSON.parse(localStorage.getItem('saveMissions'));
+    if (savedMissions) { // mentésből betöltés (ha van)
+        missionsForLoading = savedMissions;
+        missionsForLoading.forEach((mission, index) => {
+            givenMissions.push(getMissionPointsFunction(mission.title));
+            output += formatMissionOutput(mission, index, missionLabels);
+        });
+    } else {
         for (let i = 0; i < 4; i++) {
-            switch (m[i].title) {
-                case "Az erdő széle":
-                    givenMissions.push(getAzErdoSzeleMissionPoints);
-                    break;
-                case "Álmos-völgy":
-                    givenMissions.push(getAlmosVolgyPoints);
-                    break;
+            let randomMission = missions[Math.floor(Math.random() * missions.length)];
+            missionsForLoading.push(randomMission);
+            givenMissions.push(getMissionPointsFunction(randomMission.title));
+            missions = missions.filter(mission => mission !== randomMission); // kitöröljük az eredeti mátrixból, 
+            //hogy a következő sorsoláskor ezt már ne lehessen kisorsolni
 
-                case "Krumpliöntözés":
-                    givenMissions.push(getKrumpliOntozesPoints);
-                    break;
-
-                case "Határvidék":
-                    givenMissions.push(getHatarvidekMissionPoints);
-                    break;
-                case "Gazdag város":
-                    givenMissions.push(getGazdagVarosPoints);
-                    break;
-
-                case "Öntözőcsatorna":
-                    givenMissions.push(getOntozocsatornaPoints);
-                    break;
-
-                case "Fasor":
-                    givenMissions.push(getFasorPoints);
-                    break;
-
-                case "Mágusok völgye":
-                    givenMissions.push(getMagusokVolgyePoints);
-                    break;
-                case "Üres telek":
-                    givenMissions.push(getUresTelekPoints);
-                    break;
-
-                case "Sorház":
-                    givenMissions.push(getSorhazPoints);
-                    break;
-
-                case "Páratlan silók":
-                    givenMissions.push(getParatlanSilokPoints);
-                    break;
-
-                case "Gazdag vidék":
-                    givenMissions.push(getGazdagVidekPoints);
-                    break;
-                default:
-                    break;
-            }
-            if (i === 0 || i === 2) out += '<tr>';
-            out += `<td><div class="mission" id="${i}"><b>${m[i].title} ${abc[i]}</b><br>${m[i].description}</div></td>`
-            if (i === 1 || i === 3) out += '</tr>';
+            output += formatMissionOutput(randomMission, i, missionLabels);
         }
-    } else { // egyéb esetben, azaz amikor nincs mentés
-        for (let i = 0; i < 4; i++) {
-            randomMission = missions[(Math.floor(Math.random() * missions.length))];
-            m.push(randomMission);
-            switch (randomMission.title) {
-                case "Az erdő széle":
-                    givenMissions.push(getAzErdoSzeleMissionPoints);
-                    break;
-                case "Álmos-völgy":
-                    givenMissions.push(getAlmosVolgyPoints);
-                    break;
-
-                case "Krumpliöntözés":
-                    givenMissions.push(getKrumpliOntozesPoints);
-                    break;
-
-                case "Határvidék":
-                    givenMissions.push(getHatarvidekMissionPoints);
-                    break;
-                case "Gazdag város":
-                    givenMissions.push(getGazdagVarosPoints);
-                    break;
-
-                case "Öntözőcsatorna":
-                    givenMissions.push(getOntozocsatornaPoints);
-                    break;
-
-                case "Fasor":
-                    givenMissions.push(getFasorPoints);
-                    break;
-
-                case "Mágusok völgye":
-                    givenMissions.push(getMagusokVolgyePoints);
-                    break;
-                case "Üres telek":
-                    givenMissions.push(getUresTelekPoints);
-                    break;
-
-                case "Sorház":
-                    givenMissions.push(getSorhazPoints);
-                    break;
-
-                case "Páratlan silók":
-                    givenMissions.push(getParatlanSilokPoints);
-                    break;
-
-                case "Gazdag vidék":
-                    givenMissions.push(getGazdagVidekPoints);
-                    break;
-                default:
-                    break;
-            }
-            missions = missions.filter(x => x !== randomMission); // kitöröljük az eredeti mátrixból, 
-            //hogy a követketkező sorsoláskor ezt már ne lehessen kisorsolni
-
-            if (i === 0 || i === 2) out += '<tr>';
-            out += `<td><div class="mission" id="${i}"><b>${randomMission.title} ${abc[i]}</b><br>${randomMission.description}</div></td>`
-            if (i === 1 || i === 3) out += '</tr>';
-        }
-        localStorage.setItem('saveMissions', JSON.stringify(m));
-
+        localStorage.setItem('saveMissions', JSON.stringify(missionsForLoading));
     }
 
-    document.getElementById('missions').innerHTML = out;
+    document.getElementById('missions').innerHTML = output;
 }
+
+function getMissionPointsFunction(title) {
+    switch (title) {
+        case "Az erdő széle":
+            return getAzErdoSzeleMissionPoints;
+        case "Álmos-völgy":
+            return getAlmosVolgyPoints;
+        case "Krumpliöntözés":
+            return getKrumpliOntozesPoints;
+        case "Határvidék":
+            return getHatarvidekMissionPoints;
+        case "Gazdag város":
+            return getGazdagVarosPoints;
+        case "Öntözőcsatorna":
+            return getOntozocsatornaPoints;
+        case "Fasor":
+            return getFasorPoints;
+        case "Mágusok völgye":
+            return getMagusokVolgyePoints;
+        case "Üres telek":
+            return getUresTelekPoints;
+        case "Sorház":
+            return getSorhazPoints;
+        case "Páratlan silók":
+            return getParatlanSilokPoints;
+        case "Gazdag vidék":
+            return getGazdagVidekPoints;
+        default:
+            return null;
+    }
+}
+
+function formatMissionOutput(mission, index, missionLabels) {
+    let output = "";
+    if (index === 0 || index === 2) output += '<tr>';
+    output += `<td><div class="mission" id="${index}"><b>${mission.title} ${missionLabels[index]}</b><br>${mission.description}</div></td>`;
+    if (index === 1 || index === 3) output += '</tr>';
+    return output;
+}
+
 
 /**
  * Határvidék küldetést számolja ki
